@@ -3,21 +3,17 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: false}));
 app.use('/public',express.static(path.join(__dirname,'static')));
 app.use(bodyParser.json());
 app.use((request,response,next)=>{
-
+  request.myProperty = 'YES';
+  next();
 });
 
 app.get("/", (request, response) => {
-  response.sendfile(path.join(__dirname,'static','index.html'));
-});
-
-app.post('/',(request,response)=>{
-  console.log(request.body);
-  // Database stuff
-  response.json({success : true});
+  // response.sendFile(path.join(__dirname,'static','index.html'));
+  console.log(request.myProperty);
+  response.send("MiddleWare");
 });
 
 app.listen(3005);
